@@ -1,33 +1,47 @@
 import java.util.Scanner;
 
+
 public class ArraysForBubbleSort {
 
-    public static String readUserInput() {
+    private static String readUserInput() {
         Scanner scanner = new Scanner(System.in);
-        String arrayNumber = "";
-        while (scanner.hasNextLine()) {
-            boolean valid = true;
-            arrayNumber = scanner.nextLine();
-            String checkString = arrayNumber.replaceAll("[\\s-.]", "");
+        while (true) {
+            String arrayNumber = scanner.nextLine();
+            arrayNumber = arrayNumber.trim();
+            if (hasOnlyAllowedChars(arrayNumber)&&hasOnlyNumber(arrayNumber)) {
+                return arrayNumber;
+            }
+            System.out.println("Sorry. Try again");
+        }
+    }
+
+    private static boolean hasOnlyAllowedChars(String input) {
+        for (String checkString : input.split("\\s+")) {
+                checkString=checkString.replaceFirst("[.]","");
+                checkString=checkString.replaceFirst("[-]","");
             for (int i = 0; i < checkString.length(); i++) {
                 char digit = checkString.charAt(i);
-                if (Character.isDigit(digit)) {
-                    continue;
-                } else {
-                    System.out.println("Sorry. Try again");
-                    valid = false;
-                    break;
+                if (!Character.isDigit(digit)) {
+                    return false;
                 }
             }
-            if (valid) {
-                break;
+        }
+        return true;
+    }
+    private static boolean hasOnlyNumber(String input) {
+        double checkNumber;
+        for (String checkString : input.split("\\s+")) {
+            try {
+                checkNumber = Double.parseDouble(checkString);
+            }catch (Exception e){
+                return false;
             }
         }
-        return arrayNumber;
+        return true;
     }
 
     public static int countArrayLength(String numberArray) {
-        numberArray = numberArray.trim();
+        numberArray = numberArray.trim().replaceAll("\\s+", " ");
         numberArray = numberArray.replaceAll("[-.]", "");
         int count = 1;
         for (int i = 0; i < numberArray.length(); i++) {
@@ -39,27 +53,15 @@ public class ArraysForBubbleSort {
         return count;
     }
 
-    public static double[] addArray(int count, String arrayNumber) throws Exception{
-        StringBuilder builder = new StringBuilder();
+    public static double[] addArray(int count, String arrayNumber) {
         double[] arr = new double[count];
-        String stringBuilder;
         double digitDouble;
         int j = 0;
-        for (int i = 0; i < arrayNumber.length(); i++) {
-            char digitChar = arrayNumber.charAt(i);
-            if (Character.isSpaceChar(digitChar)) {
-                stringBuilder = builder.toString();
-
-                digitDouble = Double.parseDouble(stringBuilder);
-                arr[j] = digitDouble;
-                builder.setLength(0);
-                j++;
-            }
-            builder.append(digitChar);
+        for (String retval : arrayNumber.split("\\s+")) {
+            digitDouble = Double.parseDouble(retval);
+            arr[j] = digitDouble;
+            j++;
         }
-        stringBuilder = builder.toString();
-        digitDouble = Double.parseDouble(stringBuilder);
-        arr[j] = digitDouble;
         return arr;
     }
 
@@ -70,7 +72,6 @@ public class ArraysForBubbleSort {
             System.out.println(i + ": " + xxx);
         }
     }
-
 
     public static void bubbleSort(double[] arr) {
         for (int i = arr.length - 1; i > 0; i--) {
@@ -89,18 +90,13 @@ public class ArraysForBubbleSort {
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.println("This program prints an array of dimension N, filled with numbers.");
         System.out.println("Enter your array : ");
         String arrayNumber = readUserInput();
         int count = countArrayLength(arrayNumber);
-        try {
-          double []  arr = addArray(count, arrayNumber);
-            bubbleSort(arr);
-            printArray(arr);
-        } catch (Exception e){
-            System.out.println("Sorry. Try again.");
-        }
-
+        double[] arr = addArray(count, arrayNumber);
+        bubbleSort(arr);
+        printArray(arr);
     }
 }
