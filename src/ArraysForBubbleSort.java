@@ -2,67 +2,39 @@ import java.util.Scanner;
 
 
 public class ArraysForBubbleSort {
-
-    private static String readUserInput() {
+    private static String[] readUserInput() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            String arrayNumber = scanner.nextLine();
-            arrayNumber = arrayNumber.trim();
-            if (hasOnlyAllowedChars(arrayNumber)&&hasOnlyNumber(arrayNumber)) {
-                return arrayNumber;
+            String stringNumber = scanner.nextLine();
+            stringNumber = stringNumber.trim();
+            String[] checkString = stringNumber.split("\\s+");
+            if (hasOnlyNumbers(checkString)) {
+                return checkString;
             }
             System.out.println("Sorry. Try again");
         }
     }
 
-    private static boolean hasOnlyAllowedChars(String input) {
-        for (String checkString : input.split("\\s+")) {
-                checkString=checkString.replaceFirst("[.]","");
-                checkString=checkString.replaceFirst("[-]","");
-            for (int i = 0; i < checkString.length(); i++) {
-                char digit = checkString.charAt(i);
-                if (!Character.isDigit(digit)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    private static boolean hasOnlyNumber(String input) {
+    private static boolean hasOnlyNumbers(String[] checkString) {
         double checkNumber;
-        for (String checkString : input.split("\\s+")) {
+        for (String string : checkString) {
             try {
-                checkNumber = Double.parseDouble(checkString);
-            }catch (Exception e){
+                checkNumber = Double.parseDouble(string);
+            } catch (Exception e) {
                 return false;
             }
         }
         return true;
     }
 
-    public static int countArrayLength(String numberArray) {
-        numberArray = numberArray.trim().replaceAll("\\s+", " ");
-        numberArray = numberArray.replaceAll("[-.]", "");
-        int count = 1;
-        for (int i = 0; i < numberArray.length(); i++) {
-            char digit = numberArray.charAt(i);
-            if (Character.isSpaceChar(digit)) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public static double[] addArray(int count, String arrayNumber) {
-        double[] arr = new double[count];
-        double digitDouble;
+    public static double[] doubleArray(String[] stringArray) {
+        double[] doubleArray = new double[stringArray.length];
         int j = 0;
-        for (String retval : arrayNumber.split("\\s+")) {
-            digitDouble = Double.parseDouble(retval);
-            arr[j] = digitDouble;
+        for (String retval : stringArray) {
+            doubleArray[j] = Double.parseDouble(retval);
             j++;
         }
-        return arr;
+        return doubleArray;
     }
 
     public static void printArray(double[] arr) {
@@ -93,9 +65,8 @@ public class ArraysForBubbleSort {
     public static void main(String[] args) {
         System.out.println("This program prints an array of dimension N, filled with numbers.");
         System.out.println("Enter your array : ");
-        String arrayNumber = readUserInput();
-        int count = countArrayLength(arrayNumber);
-        double[] arr = addArray(count, arrayNumber);
+        String[] stringArray = readUserInput();
+       double [] arr= doubleArray(stringArray);
         bubbleSort(arr);
         printArray(arr);
     }
