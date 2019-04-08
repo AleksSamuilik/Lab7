@@ -16,10 +16,9 @@ public class ArraysForBubbleSort {
     }
 
     private static boolean hasOnlyNumbers(String[] checkString) {
-        double checkNumber;
         for (String string : checkString) {
             try {
-                checkNumber = Double.parseDouble(string);
+                Double.parseDouble(string);
             } catch (Exception e) {
                 return false;
             }
